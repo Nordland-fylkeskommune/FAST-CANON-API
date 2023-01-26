@@ -15,16 +15,17 @@ app = FastAPI()
 def read_root():
     return {"Hello": "World"}
 
-
 @app.get("/camera/capture", responses={200: {"description": "Capture image", "content": {"image/png": ""}}})
 def capture_image():
     locale.setlocale(locale.LC_ALL, '')
     logging.basicConfig(
         format='%(levelname)s: %(name)s: %(message)s', level=logging.WARNING)
+
     camera = gp.Camera()
     camera.init()
     print('Capturing image')
     file_path = camera.capture(gp.GP_CAPTURE_IMAGE)
+    file_path.rotate(180)
 
     filename = "temp_image.jpg"
     print('Camera file path: {0}/{1}'.format(file_path.folder, file_path.name))
