@@ -3,6 +3,7 @@ import logging
 import locale
 import os
 
+from PIL import Image
 from typing import Union
 import gphoto2 as gp
 from fastapi import FastAPI
@@ -31,10 +32,13 @@ def capture_image():
 
     target = os.path.join('/tmp', filename)
 
+
     print('Copying image to', target)
     camera_file = camera.file_get(
         file_path.folder, file_path.name, gp.GP_FILE_TYPE_NORMAL)
-    camera_file.save(target.rotate(180))
+
+    # image = Image.open(target)
+    camera_file.save(target)
 
     camera.exit()
     return FileResponse(target, media_type="image/png")
